@@ -1,29 +1,28 @@
 import streamlit as st
 
-def calculate_awol_score(arousal, whispers, orientation, length_of_stay):
-    # Arousal: Arousable to voice (0) or Unarousable to voice (4)
-    # Whispers: Hears whispers (0) or Does not hear whispers (1)
-    # Orientation: Oriented to place (0) or Disoriented to place (2)
-    # Length of stay: <24 hours (0) or >=24 hours (1)
-    awol_score = arousal + whispers + orientation + length_of_stay
-    return awol_score
+def calculate_delirium_risk_score(age, spells_world_backward, oriented_to_location, nursing_illness_severity):
+    # Age: <80 years (0) or >=80 years (1)
+    # Correctly spells "world" backward: Yes (0) or No (1)
+    # Oriented to city/state/county/hospital/floor: Yes (0) or No (1)
+    # Nursing illness severity assessment: Not ill (0), Mildly ill (0), Moderately ill (1), Severely ill (1), Moribund (1)
+    risk_score = age + spells_world_backward + oriented_to_location + nursing_illness_severity
+    return risk_score
 
-st.title("AWOL Score for Delirium Calculator")
+st.title("Delirium Risk Calculator")
 
-# User input for AWOL score parameters
-arousal = st.selectbox("Arousal (Arousable to voice or Unarousable to voice)", [0, 4])
-whispers = st.selectbox("Whispers (Hears whispers or Does not hear whispers)", [0, 1])
-orientation = st.selectbox("Orientation (Oriented to place or Disoriented to place)", [0, 2])
-length_of_stay = st.selectbox("Length of stay (<24 hours or >=24 hours)", [0, 1])
+# User input for delirium risk score parameters
+age = st.selectbox("Age (<80 years or >=80 years)", [0, 1], format_func=lambda x: "<80 years" if x == 0 else ">=80 years")
+spells_world_backward = st.selectbox("Correctly spells 'world' backward (Yes or No)", [0, 1], format_func=lambda x: "Yes" if x == 0 else "No")
+oriented_to_location = st.selectbox("Oriented to city, state, county, hospital name, and floor (Yes or No)", [0, 1], format_func=lambda x: "Yes" if x == 0 else "No")
+nursing_illness_severity = st.selectbox("Nursing illness severity assessment (Not ill, Mildly ill, Moderately ill, Severely ill, Moribund)", [0, 0, 1, 1, 1], format_func=lambda x: "Not ill" if x == 0 else ("Mildly ill" if x == 0 else ("Moderately ill" if x == 1 else ("Severely ill" if x == 1 else "Moribund"))))
 
-# Calculate AWOL score
-if st.button("Calculate AWOL Score"):
-    awol_score = calculate_awol_score(arousal, whispers, orientation, length_of_stay)
-    st.write("AWOL Score for Delirium:", awol_score)
+# Calculate delirium risk score
+if st.button("Calculate Delirium Risk Score"):
+    risk_score = calculate_delirium_risk_score(age, spells_world_backward, oriented_to_location, nursing_illness_severity)
+    st.write("Delirium Risk Score:", risk_score)
 
-    # Interpretation of the AWOL Score
-    if awol_score <= 2:
+    # Interpretation of the Delirium Risk Score
+    if risk_score <= 1:
         st.write("Low risk for delirium")
-    elif awol_score > 2:
+    elif risk_score > 1:
         st.write("High risk for delirium")
-
