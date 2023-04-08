@@ -29,7 +29,7 @@ nursing_illness_severity = st.radio(
 
 
 # Get the point value for the selected nursing illness severity level
-nursing_illness_severity_points = nursing_illness_severity_mapping[nursing_illness_severity]
+nursing_illness_severity_points = int(nursing_illness_severity_mapping[nursing_illness_severity])
 
 # Calculate delirium risk score
 if st.button("Calculate Delirium Risk Score"):
