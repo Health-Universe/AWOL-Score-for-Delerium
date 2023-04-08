@@ -18,9 +18,6 @@ nursing_illness_severity_mapping = {
     "Moribund": 1
 }
 
-# Get the point value for the selected nursing illness severity level
-nursing_illness_severity_points = nursing_illness_severity_mapping[nursing_illness_severity]
-
 # User input for delirium risk score parameters
 age = st.selectbox("Age (<80 years or >=80 years)", [0, 1], format_func=lambda x: "<80 years" if x == 0 else ">=80 years")
 spells_world_backward = st.selectbox("Correctly spells 'world' backward (Yes or No)", [0, 1], format_func=lambda x: "Yes" if x == 0 else "No")
@@ -29,6 +26,10 @@ nursing_illness_severity = st.radio(
     "Nursing illness severity assessment",
     options=list(nursing_illness_severity_mapping.keys())
 )
+
+
+# Get the point value for the selected nursing illness severity level
+nursing_illness_severity_points = nursing_illness_severity_mapping[nursing_illness_severity]
 
 # Calculate delirium risk score
 if st.button("Calculate Delirium Risk Score"):
